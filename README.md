@@ -1,2 +1,2 @@
 # jscardgame1
-カードゲームとか
+カードゲームとか→ https://inaridarkfox4231.github.io/jscardgame1/. 
