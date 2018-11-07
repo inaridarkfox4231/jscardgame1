@@ -1,0 +1,11 @@
+/* 基本設定（まだよく理解してないけど） */
+*{
+  padding: 0;
+  margin: 0;
+}
+/* タグ要素は普通にタグ名で{}ってやる */
+canvas{
+  background-color: #000;
+  display: block;
+  margin: 0 auto;
+}
