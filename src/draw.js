@@ -2,9 +2,11 @@
 
 function drawAllCards(ctx){
   // すべてのカードを描画する
-  ctx.drawImage(back, 10, 10);
-  ctx.drawImage(back, 80, 10);
-  ctx.drawImage(back, 10, 80);
+  for(i = 0; i < 5; i++){
+    for(j = 0; j < 4; j++){
+      ctx.drawImage(back, 10 + 70 * i, 10 + 70 * j);
+    }
+  }
 }
 
 function drawInit(){
