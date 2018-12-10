@@ -1,17 +1,8 @@
 // スクリプトの記述
-$(function(){
-  // この中身が実行される。おまじない。
-  "use strict"; // これもおまじない。
-  // 他のファイルからajaxで読み込む（ことができる）（らしい）。
-  $.ajax({url: "./src/variable.js", dataType: "script", sync: false});
-  $.ajax({url: "./src/draw.js", dataType: "script", sync: false});
-  $.ajax({url: "./src/update.js", dataType: "script", sync: false});
 
-  // ここにゲームループの記述
-  function gameLoop(){
-    update();
-    draw();
-  }
+"use strict";
 
-  setInterval(gameLoop, 20);
-});
+$.ajax({url: "./src/variables.js", dataType: "script", async: false});
+$.ajax({url: "./src/draw.js", dataType: "script", async: false});
+$.ajax({url: "./src/update.js", dataType: "script", async: false});
+$.ajax({url: "./src/keyevents.js", dataType: "script", async: false});

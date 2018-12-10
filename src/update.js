@@ -1,6 +1,12 @@
 // 各種の更新処理
 function init(){
+  drawInit();
+  $('#Enterbutton').hide();
+  $('#field').show();
+  state = PLAY;
 }
 
-function update(){
+// Enterキー（タイトルで押す）
+function enterkeyprocess(){
+  if(state == TITLE){ init(); }
 }
