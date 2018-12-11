@@ -22,36 +22,25 @@ $('#board').click(function(e){
 
   var x = e.clientX - $(this).offset().left;
   var y = e.clientY - $(this).offset().top;
-  console.log('マウスの位置は(%d, %d)です', x, y);
   // ここで(x, y)からカードの位置を計算する、カードがない位置であれば-1を返す。
   // カードの位置はたとえば20枚だとして0～19でパラメトライズされている。
   var pos = calc_cardpos(x, y);
 
   // posによる分岐
   if(pos < 0){ return; } // クリックした位置にカードはありませんでした
-  if(pos >= 4){ return; } // 今のところ、4以降の場所にカードがないので。
 
-  // 100ミリ秒単位でreverseアニメを始める
+  // 50ミリ秒単位でreverseアニメを始める
   // コールバック関数の引数は、このように繰り返しミリ秒を指定してからその後ろに書く
-  reverse_anim = setInterval(reverse, 50, pos);
+
+  // posからいろいろ計算する
+  var left = 10 + (pos % 5) * 70; // カードの位置の左端
+  var top = 10 + Math.floor(pos / 5) * 70; // カードの位置の上端
+  var kind = card_list[pos]; // その位置にあるカードの種類
+  var cd_st = card_state[pos]; // カードの状態（0なら裏、1なら表）
+
+  reverse_anim = setInterval(reverse, 50, pos, left, top, kind, cd_st);
   state = REVERSE; // カード反転中にする
 
-/*
-  // posからカードの左上隅の座標を取り出す
-  var left = 10 + 70 * (pos % 5);
-  var top = 10 + 70 * (Math.floor(pos / 5));
-  var kind = card_list[pos]; // posの位置にあるカードに書かれた数
-  //console.log('pos = %d left = %d top = %d kind = %d', pos, left, top, kind);
-
-  // カードをひっくり返す
-  var ctx = getctx();
-  card_state[pos] = 1 - card_state[pos];
-  if(card_state[pos] == 0){
-    ctx.drawImage(back, left, top);
-  }else{
-    ctx.drawImage(cards[kind], left, top);
-  }
-*/
 })
 
 // ひっくり返すには、setTransformで(1,0,0,1,10,10)から(-1,0,0,1,70,10)まで

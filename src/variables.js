@@ -5,6 +5,7 @@ var i, j, k, tmp; // 回す変数
 var backGround = new Image(); // 背景。
 var back = new Image(); // カードの背。(カードは60×60)
 var cards = []; // カードの画像を格納する配列。たとえばcards[6]は6のカード。
+const NUM_OF_CARDS = 10; // カードの種類数
 var blank = new Image();
 
 // キーコード
@@ -37,9 +38,12 @@ function getctx(){
 function loading(){
   backGround.src = "./images/background.png";
   back.src = "./images/back.png";
-  for(i = 0; i < 4; i++){
-    card_state.push(0);
-    card_list.push(i);  // とりあえず0～19を順番に入れる
+  for(i = 0; i < 20; i++){
+    card_state.push(0); // 全部、裏
+    card_list.push(i % 10);  // とりあえず0～9を順番に入れる
+  }
+  // よく考えたらカードの種類は10種類だっけ、半分。
+  for(i = 0; i < NUM_OF_CARDS; i++){
     var img = new Image();
     img.src = "./images/card_" + i + ".png";
     cards.push(img);
