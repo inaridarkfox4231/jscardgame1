@@ -35,12 +35,26 @@ function getctx(){
   return ctx;
 }
 
+// 0～19のシャッフルを返す(変数化して汎用性を持たせた)
+function shuffle(len){
+  var x = [];
+  var y = [];
+  for(i = 0; i < len; i++){ x.push(i); }
+  for(i = 0; i < len; i++){
+      var k = Math.floor(Math.random() * (len - i));
+      y.push(x[k]);
+      x[k] = x[len - 1 - i];
+  }
+  return y;
+}
+
 function loading(){
   backGround.src = "./images/background.png";
   back.src = "./images/back.png";
+  var y = shuffle(20);
   for(i = 0; i < 20; i++){
     card_state.push(0); // 全部、裏
-    card_list.push(i % 10);  // とりあえず0～9を順番に入れる
+    card_list.push(y[i] % 10);  // とりあえず0～9を順番に入れる
   }
   // よく考えたらカードの種類は10種類だっけ、半分。
   for(i = 0; i < NUM_OF_CARDS; i++){
