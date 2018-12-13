@@ -14,7 +14,6 @@ const K_ENTER = 13;
 // 状態遷移
 const TITLE = 0;
 const PLAY = 1;
-const REVERSE = 2;  // カード反転中
 var state = TITLE;
 
 // カードの裏表を記録する配列
@@ -27,6 +26,10 @@ var card_list = [];
 // カード反転のアニメーションを格納する変数
 var count = 0;
 var reverse_anim;
+
+// めくったカードの位置と種類
+var stock_pos = [-1, -1];
+var stock_kind = [-1, -1];
 
 // contextの取得
 function getctx(){
