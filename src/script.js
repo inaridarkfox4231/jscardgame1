@@ -7,4 +7,8 @@ $.ajax({url: "./src/draw.js", dataType: "script", async: false});
 $.ajax({url: "./src/update.js", dataType: "script", async: false});
 $.ajax({url: "./src/events.js", dataType: "script", async: false});
 
-// 読み込まれない原因・・asyncのところがsyncになってた。はぅぅ。
+// これを50ms単位で繰り返す
+function mainLoop(){
+  draw();
+  update();
+}

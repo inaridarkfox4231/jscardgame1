@@ -6,7 +6,7 @@ $(window).keyup(function(e){
   if(e.keyCode == K_ENTER){ enterkeyprocess(); }
 })
 
-// カードの相対位置を返す関数
+// クリック位置に対してカードの相対位置を返す関数（カードがなければ-1を返す）
 function calc_cardpos(x, y){
   var rx = (x - 1) % 70, ry = (y - 1) % 70;
   var qx = Math.floor((x - 1) / 70), qy = Math.floor((y - 1) / 70);
@@ -16,19 +16,16 @@ function calc_cardpos(x, y){
 
 // posから色々計算する
 function calc_data(pos){
-  var data = []; // 辞書に格納
-  data["cd_st"] = card_state[pos]; // カードの状態(0:裏,1:表)
+  data["pos"] = pos; // カードの位置を示す通し番号
   data["left"] = 10 + (pos % 5) * 70; // カードの位置（左端）
   data["top"] = 10 + (Math.floor(pos / 5) * 70); // カードの位置（上端）
   data["kind"] = card_list[pos]; // カードの種類
-  return data;
+  data["cd_st"] = card_state[pos]; // カードの状態(0:裏,1:表)
 }
 
-// クリックした位置のカードをひっくり返す（はず）
+// クリックした位置のカードをひっくり返す
 $('#board').click(function(e){
-
-  // ここに「state == REVERSE ならreturn」って書けばいい→「count > 0」に変更。
-  if(count > 0){ return; } // カード反転中
+  if(state != PLAY){ return; } // PLAYの間だけ反転できる
 
   var x = e.clientX - $(this).offset().left;
   var y = e.clientY - $(this).offset().top;
@@ -38,13 +35,11 @@ $('#board').click(function(e){
 
   // posによる分岐
   if(pos < 0){ return; } // クリックした位置にカードはありませんでした
-  var data = calc_data(pos); // カードの情報を取得
-  if(data["cd_st"] == 1){ return; } // 表になってるカードはクリックで反転しない
+  if(card_state[pos] == 1){ return; } // 表のカードはクリックしても無反応
 
-  // 50ミリ秒単位でreverseアニメを始める
-  // コールバック関数の引数は、このように繰り返しミリ秒を指定してからその後ろに書く
-
-  reverse_anim = setInterval(reverse, 50, pos, data);
+  // dataを計算して、stateをREVERSEに設定
+  calc_data(pos);
+  state = REVERSE;
 })
 
 // ひっくり返すには、setTransformで(1,0,0,1,10,10)から(-1,0,0,1,70,10)まで

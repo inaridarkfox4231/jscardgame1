@@ -2,10 +2,11 @@
 
 // 初期化
 function init(){
-  drawInit();
+  //drawInit();
   $('#heading').hide();
   $('#field').show();
   state = PLAY;
+  setInterval(mainLoop, 50); // ここでゲームをスタートさせる
 }
 
 // Enterキー（タイトルで押す）
@@ -13,32 +14,45 @@ function enterkeyprocess(){
   if(state == TITLE){ init(); }
 }
 
-// カード反転操作
-function reverse(pos, data){
-  count += 1;
-  // countに応じた描画処理
-  tmp = count / 10;
-  if(count == 10){ tmp = 1; }
-
-  var ctx = getctx();
-  ctx.setTransform(1, 0, 0, 1, 0, 0); // 初期化
-  ctx.drawImage(blank, data["left"], data["top"]); // 該当マスをリセット
-  // Transform処理（回転表現）
-  if(count <= 5){
-    ctx.setTransform(1 - 2 * tmp, 0, 0, 1, data["left"] + 60 * tmp, data["top"]);
-  }else{
-    ctx.setTransform(2 * tmp - 1, 0, 0, 1, data["left"] + 60 * (1 - tmp), data["top"]);
-  }
-  // cd_stが0でcountが5以下のときか、cd_stが1でcountが5より大の時に、裏。さもなくば、表。
-  if((data["cd_st"] == 0 && count <= 5) || (data["cd_st"] == 1 && count > 5)){
-    ctx.drawImage(back, 0, 0);
-  }else{
-    ctx.drawImage(cards[data["kind"]], 0, 0);
-  }
-  if(count == 10){
-    count = 0;
-    clearInterval(reverse_anim); // 繰り返し処理の終了（Timeoutを使う方法もある）
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    card_state[pos] = 1 - card_state[pos]; // 反転状況の修正
+// 更新処理（主に
+function update(){
+  if(state == REVERSE){
+    // リバースカウントのリセット、その後の処理
+    if(count == 10){
+      count = 0;
+      card_state[data["pos"]] = 1 - data["cd_st"]; // カードの表裏の状態を更新
+      if(stock[0] < 0 && data["cd_st"] == 0){ // 1枚目クリック
+        stock[0] = data["pos"];
+        state = PLAY; // 戻す。
+      }else if(stock[0] >= 0 && data["cd_st"] == 0){ // 2枚目クリック
+        stock[1] = data["pos"];
+        state = JUDGE; // 外れの場合、JUDGE内でREVERSEにする。当たりならPLAYにする。
+        is_correct = (card_list[stock[0]] == card_list[stock[1]] ? 1 : 0);
+      }else if(stock[0] >= 0 && data["cd_st"] == 1){
+        // 外れで、1枚目が戻った時の処理
+        stock[0] = -1;
+        calc_data(stock[1]); // stock[1]のところにあるカードのREVERSE処理開始
+      }else{
+        // 外れで、2枚目が戻った時の処理
+        stock[1] = -1;
+        state = PLAY; // 戻す。
+      }
+    }
+  }else if(state == JUDGE){
+    // ジャッジカウントのリセット、その後の処理
+    if(count == 10){
+      count = 0;
+      if(is_correct == 1){
+        console.log("スコア増えます");
+        // stockのリセット(外れの時とちがってここでリセットしないとする機会がない)
+        stock[0] = -1, stock[1] = -1;
+        state = PLAY;
+      }else if(is_correct == 0){
+        console.log("4回目以降スコア減ります"); // 初めの3回までは減らない（お手付き）
+        calc_data(stock[0]); // 1枚目から反転開始
+        state = REVERSE;
+      }
+      is_correct = -1;
+    }
   }
 }

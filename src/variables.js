@@ -6,26 +6,35 @@ var backGround = new Image(); // 背景。
 var back = new Image(); // カードの背。(カードは60×60)
 var cards = []; // カードの画像を格納する配列。たとえばcards[6]は6のカード。
 const NUM_OF_CARDS = 10; // カードの種類数
-var blank = new Image();
+var blank = new Image(); // カード反転のアニメーションに使う空白画像
 
 // キーコード
 const K_ENTER = 13;
+const K_SPACE = 32;
 
 // 状態遷移
 const TITLE = 0;
 const PLAY = 1;
+const REVERSE = 2;
+const JUDGE = 3;
+const FINISHED = 4;
 var state = TITLE;
 
-// カードの裏表を記録する配列
+// カードの裏表を記録する配列(毎ターンの描画に使う)
 // たとえばcard_state[2] = 1だったら2の位置にあるカードは表向き。
 var card_state = [];
 // 各々の位置のカードの種類を記録する配列（0～19がランダムで格納される）
 // たとえばcard_list[2] = 6だったら2の位置に6のカードがある、という、描画に使う。
 var card_list = [];
+// data. カード反転の際に情報を格納する。
+var data = [];
+// stock. めくったカードの位置を記録する。
+var stock = [-1, -1];
+// 当たりはずれを表す変数(-1, 0:外れ, 1:当たり)
+var is_correct = -1;
 
-// カード反転のアニメーションを格納する変数
+// カウント
 var count = 0;
-var reverse_anim;
 
 // contextの取得
 function getctx(){
@@ -47,13 +56,14 @@ function shuffle(len){
   return y;
 }
 
+// 画像のロードなど
 function loading(){
   backGround.src = "./images/background.png";
   back.src = "./images/back.png";
-  var y = shuffle(20);
+  var y = shuffle(20); // 0~19のシャッフル
   for(i = 0; i < 20; i++){
     card_state.push(0); // 全部、裏
-    card_list.push(y[i] % 10);  // とりあえず0～9を順番に入れる
+    card_list.push(y[i] % 10);  // 0~9が2つずつの20個がランダムに格納される
   }
   // よく考えたらカードの種類は10種類だっけ、半分。
   for(i = 0; i < NUM_OF_CARDS; i++){
