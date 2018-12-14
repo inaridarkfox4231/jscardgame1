@@ -42,9 +42,3 @@ function reverse(pos, data){
     card_state[pos] = 1 - card_state[pos]; // 反転状況の修正
   }
 }
-
-// カードをめくった時の処理
-function check(){
-  // stock_pos[0] = -1のときはstock_posとstock_kindに該当する数を入れて
-  console.log("作成中");
-}

@@ -27,10 +27,6 @@ var card_list = [];
 var count = 0;
 var reverse_anim;
 
-// めくったカードの位置と種類
-var stock_pos = [-1, -1];
-var stock_kind = [-1, -1];
-
 // contextの取得
 function getctx(){
   var canvas = $('canvas')[0];
