@@ -2,6 +2,7 @@
 
 function drawAllCards(ctx){
   // すべてのカードを描画する
+  ctx.drawImage(backGround, 0, 0);
   for(i = 0; i < 5; i++){
     for(j = 0; j < 4; j++){
       var pos = i + 5 * j;
@@ -35,6 +36,11 @@ function drawReverseCard(ctx){
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
+// 数表示(位置(x, y)に数字0~9を描画する)
+function drawNumber(x, y, n){
+  ctx.drawImage(numbers, 18 * n, 0, 18, 30, x, y, 18, 30);
+}
+
 // 描画処理
 function draw(){
   var ctx = getctx();
@@ -50,8 +56,10 @@ function draw(){
     count += 1;
     if(is_correct == 1){
       console.log("正解");
+      ctx.drawImage(texts["yougot"], 100, 330);
     }else if(is_correct == 0){
       console.log("はずれ");
+      ctx.drawImage(texts["failed"], 127, 330);
     }
   }
 }

@@ -2,11 +2,18 @@
 
 var i, j, k, tmp; // 回す変数
 
+// 画像関連
 var backGround = new Image(); // 背景。
 var back = new Image(); // カードの背。(カードは60×60)
 var cards = []; // カードの画像を格納する配列。たとえばcards[6]は6のカード。
 const NUM_OF_CARDS = 10; // カードの種類数
 var blank = new Image(); // カード反転のアニメーションに使う空白画像
+
+var scoreText = new Image();  // SCOREの文字
+var yougotText = new Image(); // YOU GOTの文字
+var failedText = new Image(); // FAILEDの文字
+var texts = []; // テキスト関連はここにキー付きで格納
+var numbers = new Image(); // 数表示用
 
 // キーコード
 const K_ENTER = 13;
@@ -72,4 +79,11 @@ function loading(){
     cards.push(img);
   }
   blank.src = "./images/blank.png";
+  scoreText.src = "./images/SCORE.png";
+  yougotText.src = "./images/YOU_GOT_IT.png";
+  failedText.src = "./images/FAILED.png";
+  texts["score"] = scoreText;
+  texts["yougot"] = yougotText;
+  texts["failed"] = failedText;
+  numbers.src = "./images/NUMBER.png";
 }
