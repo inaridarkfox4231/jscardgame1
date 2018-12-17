@@ -2,10 +2,10 @@
 
 // 初期化
 function init(){
-  //drawInit();
   $('#heading').hide();
   $('#field').show();
   state = PLAY;
+  drawAllCards();
   setInterval(mainLoop, 50); // ここでゲームをスタートさせる
 }
 
@@ -42,14 +42,22 @@ function update(){
     // ジャッジカウントのリセット、その後の処理
     if(count == 10){
       count = 0;
+      var ctx = getctx();
       if(is_correct == 1){
         console.log("スコア増えます");
         // stockのリセット(外れの時とちがってここでリセットしないとする機会がない)
+        // ここでみつかった箇所のカードの位置をブランクにします
+        calc_data(stock[0]);
+        ctx.drawImage(blank, data["left"], data["top"]);
+        calc_data(stock[1]);
+        ctx.drawImage(blank, data["left"], data["top"]);
         stock[0] = -1, stock[1] = -1;
+        ctx.drawImage(erase, 0, 330);
         state = PLAY;
       }else if(is_correct == 0){
         console.log("4回目以降スコア減ります"); // 初めの3回までは減らない（お手付き）
         calc_data(stock[0]); // 1枚目から反転開始
+        ctx.drawImage(erase, 0, 330);
         state = REVERSE;
       }
       is_correct = -1;

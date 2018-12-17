@@ -1,16 +1,13 @@
 // 描画処理関連
 
-function drawAllCards(ctx){
+function drawAllCards(){
   // すべてのカードを描画する
+  var ctx = getctx();
   ctx.drawImage(backGround, 0, 0);
   for(i = 0; i < 5; i++){
     for(j = 0; j < 4; j++){
       var pos = i + 5 * j;
-      if(card_state[pos] == 0){
-        ctx.drawImage(back, 10 + 70 * i, 10 + 70 * j); // 裏の時
-      }else{
-        ctx.drawImage(cards[card_list[pos]], 10 + 70 * i, 10 + 70 * j); // 表の時
-      }
+      ctx.drawImage(back, 10 + 70 * i, 10 + 70 * j); // 表の時
     }
   }
 }
@@ -36,7 +33,7 @@ function drawReverseCard(ctx){
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
-// 数表示(位置(x, y)に数字0~9を描画する)
+// 数表示(左上の位置(x, y)に数字0~9を描画する)
 function drawNumber(x, y, n){
   ctx.drawImage(numbers, 18 * n, 0, 18, 30, x, y, 18, 30);
 }
@@ -44,9 +41,6 @@ function drawNumber(x, y, n){
 // 描画処理
 function draw(){
   var ctx = getctx();
-  if(state != FINISHED){
-    drawAllCards(ctx);
-  }
   if(state == REVERSE){
     // 反転中のカードを描画
     count += 1;

@@ -13,6 +13,7 @@ var scoreText = new Image();  // SCOREの文字
 var yougotText = new Image(); // YOU GOTの文字
 var failedText = new Image(); // FAILEDの文字
 var texts = []; // テキスト関連はここにキー付きで格納
+var erase = new Image(); // テキスト消去用
 var numbers = new Image(); // 数表示用
 
 // キーコード
@@ -85,5 +86,7 @@ function loading(){
   texts["score"] = scoreText;
   texts["yougot"] = yougotText;
   texts["failed"] = failedText;
+  erase.src = "./images/erase.png";
   numbers.src = "./images/NUMBER.png";
+  baseImage.src = "./images/baseImage.JPG";
 }
