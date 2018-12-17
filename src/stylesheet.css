@@ -33,3 +33,8 @@ button{
 button:hover{
   background-color: #33CCFF;
 }
+
+#config{
+  text-align: center;
+  display: none;
+}

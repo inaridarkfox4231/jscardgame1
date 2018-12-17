@@ -1,6 +1,7 @@
 // キーイベント関連
 
 $('#Enterbutton').click(function(){ init(); })
+$('#Resetbutton').click(function(){ reset(); })
 
 $(window).keyup(function(e){
   if(e.keyCode == K_ENTER){ enterkeyprocess(); }

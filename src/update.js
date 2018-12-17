@@ -4,9 +4,27 @@
 function init(){
   $('#heading').hide();
   $('#field').show();
+  $('#config').show();
   state = PLAY;
   drawAllCards();
   setInterval(mainLoop, 50); // ここでゲームをスタートさせる
+}
+
+function reset(){
+  // 0~19のシャッフルを取得、
+  // それをcard_listに格納、
+  // card_stateを0で初期化、
+  // stockを-1, -1で初期化、
+  // stateをPLAYにする、
+  // 各カードの位置にbackを描画（drawAllCardsでよい）
+  var y = shuffle(20);
+  for(i = 0; i < 20; i++){
+    card_list[i] = y[i] % 10;
+    card_state[i] = 0;
+  }
+  stock[0] = -1, stock[1] = -1;
+  state = PLAY;
+  drawAllCards();
 }
 
 // Enterキー（タイトルで押す）
